@@ -9,39 +9,6 @@ import (
 	"time"
 )
 
-func Symbols() []rune {
-	s := `!@#$%^&*(){}[]|=+:;"'<>,.?/` + "`"
-	rc := make([]rune, 0, len(s))
-	for _, r := range s {
-		rc = append(rc, r)
-	}
-	return rc
-}
-
-func Numbers() []rune {
-	rc := make([]rune, 0, 10)
-	for r := '0'; r <= '9'; r++ {
-		rc = append(rc, r)
-	}
-	return rc
-}
-
-func UpperLetters() []rune {
-	rc := make([]rune, 0, 26)
-	for r := 'A'; r <= 'Z'; r++ {
-		rc = append(rc, r)
-	}
-	return rc
-}
-
-func LowerLetters() []rune {
-	rc := make([]rune, 0, 26)
-	for r := 'a'; r <= 'z'; r++ {
-		rc = append(rc, r)
-	}
-	return rc
-}
-
 func gen(set []rune, l int) string {
 	sb := strings.Builder{}
 	for i := 0; i < l; i++ {
@@ -53,10 +20,10 @@ func gen(set []rune, l int) string {
 
 func main() {
 	charsets := map[string][]rune{
-		"lc":  LowerLetters(),
-		"uc":  UpperLetters(),
-		"num": Numbers(),
-		"sym": Symbols(),
+		"lc":  []rune("abcdefghijklmnopqrstuvwxyz"),
+		"uc":  []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),
+		"num": []rune("0123456789"),
+		"sym": []rune(`!@#$%^&*(){}[]|=+:;"'<>,.?/` + "`"),
 	}
 
 	rand.Seed(time.Now().UnixNano())
@@ -79,7 +46,7 @@ func main() {
 	// log.Printf("entropy = %v", entropy)
 	// log.Printf("len(charset) = %v", len(charset))
 
-	passwords := []string{}
+	passwords := make([]string, *count)
 	for i := 0; i < *count; i++ {
 		passwords = append(passwords, gen(charset, *length))
 	}
